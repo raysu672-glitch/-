@@ -1,0 +1,3164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>长难句 · 主谓宾分析练习</title>
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  background: #f5f4f0;
+  color: #1a1a1a;
+  min-height: 100vh;
+}
+
+/* ===== Start Screen ===== */
+#startScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f4f0 0%, #e8f5e9 100%);
+}
+.start-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 540px;
+  box-shadow: 0 8px 40px rgba(46,125,50,0.12);
+  text-align: center;
+}
+.start-logo {
+  width: 64px; height: 64px;
+  background: #2E7D32;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 auto 20px;
+}
+.start-card h2 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+.start-card p  { font-size: 14px; color: #888; margin-bottom: 32px; line-height: 1.7; }
+.start-btn {
+  padding: 14px 48px;
+  background: #2E7D32;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.start-btn:hover { background: #1B5E20; }
+.start-btn.secondary { background: #888; }
+.start-btn.secondary:hover { background: #666; }
+
+/* ===== Header ===== */
+.page-header {
+  background: #fff;
+  border-bottom: 0.5px solid rgba(0,0,0,0.1);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo-badge {
+  width: 36px; height: 36px;
+  background: #2E7D32;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.page-header h1 { font-size: 15px; font-weight: 500; }
+.page-header p { font-size: 12px; color: #888; margin-top: 2px; }
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.timer-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #FFF3E0;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 13px;
+  color: #E65100;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.error-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #FFEBEE;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 13px;
+  color: #C62828;
+  font-weight: 500;
+}
+.remaining-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #E8F5E9;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 13px;
+  color: #2E7D32;
+  font-weight: 500;
+}
+
+/* ===== Container ===== */
+.container {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 20px 16px 80px;
+}
+
+/* ===== Progress bar ===== */
+.progress-wrap { margin-bottom: 18px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; color: #888; margin-bottom: 6px; }
+.progress-bar { height: 8px; background: rgba(0,0,0,0.08); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: #2E7D32; border-radius: 4px; transition: width 0.4s ease; }
+
+/* ===== Task Hint ===== */
+.task-hint {
+  background: #E8F5E9;
+  border: 0.5px solid #A5D6A7;
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #1B5E20;
+  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.task-hint .hint-icon {
+  font-weight: 600;
+  background: #2E7D32;
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* ===== Role Selector ===== */
+.role-selector {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.role-label {
+  font-size: 13px;
+  color: #888;
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+.role-btn {
+  padding: 6px 14px;
+  border: 1.5px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #fff;
+  color: #1a1a1a;
+  transition: all 0.15s;
+  font-weight: 500;
+}
+.role-btn:hover { border-color: #2E7D32; color: #2E7D32; }
+.role-btn.active-S { background: #1565C0; color: #fff; border-color: #1565C0; }
+.role-btn.active-V { background: #E65100; color: #fff; border-color: #E65100; }
+.role-btn.active-O { background: #7B1FA2; color: #fff; border-color: #7B1FA2; }
+.role-btn.active-L { background: #00838F; color: #fff; border-color: #00838F; }
+.role-btn.active-P { background: #C2185B; color: #fff; border-color: #C2185B; }
+
+/* ===== Undo Button ===== */
+.undo-btn {
+  margin-left: auto;
+  padding: 6px 12px;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  background: #fff;
+  color: #888;
+  transition: all 0.15s;
+}
+.undo-btn:hover { border-color: #E65100; color: #E65100; }
+.undo-btn:disabled { opacity: 0.3; cursor: default; }
+
+/* ===== Sentence Display ===== */
+.sentence-area {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 14px;
+  line-height: 2.8;
+  font-size: 18px;
+}
+.word-token {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 2px 2px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1.5px solid transparent;
+  user-select: none;
+  position: relative;
+  vertical-align: baseline;
+  color: #1a1a1a;
+}
+
+/* Default: all words look the same — clickable */
+.word-token.wt-ready {
+  border-color: #E0E0E0;
+  background: #FAFAFA;
+}
+.word-token.wt-ready:hover {
+  background: #E8F5E9;
+  border-color: #66BB6A;
+}
+
+/* Done: word assigned a role */
+.word-token.wt-done {
+  cursor: pointer;
+  font-weight: 500;
+}
+.word-token.wt-done:hover {
+  opacity: 0.8;
+}
+
+/* Role coloring for done words */
+.word-token.r-S { background: #E3F2FD; border-color: #64B5F6; color: #1565C0; }
+.word-token.r-V { background: #FFF3E0; border-color: #FFB74D; color: #E65100; }
+.word-token.r-O { background: #F3E5F5; border-color: #CE93D8; color: #7B1FA2; }
+.word-token.r-L { background: #E0F7FA; border-color: #4DD0E1; color: #00838F; }
+.word-token.r-P { background: #FCE4EC; border-color: #F48FB1; color: #C2185B; }
+
+/* Role label tag (shown above the word) */
+.role-tag {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  line-height: 1.4;
+  pointer-events: none;
+}
+.r-S .role-tag { background: #1565C0; color: #fff; }
+.r-V .role-tag { background: #E65100; color: #fff; }
+.r-O .role-tag { background: #7B1FA2; color: #fff; }
+.r-L .role-tag { background: #00838F; color: #fff; }
+.r-P .role-tag { background: #C2185B; color: #fff; }
+
+/* Wrong flash */
+.word-token.wrong-flash {
+  animation: wrongShake 0.45s;
+  background: #FFCDD2 !important;
+  border-color: #E53935 !important;
+  color: #C62828 !important;
+}
+@keyframes wrongShake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+/* Correct pop */
+.word-token.correct-pop {
+  animation: correctPop 0.35s;
+}
+@keyframes correctPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+/* ===== Feedback ===== */
+.feedback-box {
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 14px;
+  display: none;
+  line-height: 1.5;
+}
+.feedback-box.show { display: flex; align-items: center; gap: 8px; }
+.feedback-box.ok   { background: #E8F5E9; color: #1B5E20; border: 0.5px solid #A5D6A7; }
+.feedback-box.err  { background: #FFEBEE; color: #B71C1C; border: 0.5px solid #EF9A9A; }
+.feedback-box.info { background: #E3F2FD; color: #0D47A1; border: 0.5px solid #90CAF9; }
+
+/* ===== Submit Button ===== */
+.submit-area {
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 14px;
+}
+.submit-btn {
+  padding: 12px 36px;
+  background: #2E7D32;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.submit-btn:hover { background: #1B5E20; }
+.submit-btn:disabled { background: #ccc; cursor: default; }
+
+/* ===== Analysis Panel (shown after submit) ===== */
+.analysis-panel {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.1);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 14px;
+  animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.analysis-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2E7D32;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.analysis-clause {
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 0.5px solid rgba(0,0,0,0.08);
+}
+.analysis-clause.main-clause {
+  background: #E8F5E9;
+  border-color: #A5D6A7;
+}
+.analysis-clause.sub-clause {
+  background: #FFF8E1;
+  border-color: #FFE082;
+}
+.clause-label-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.main-clause .clause-label-tag { background: #2E7D32; color: #fff; }
+.sub-clause .clause-label-tag { background: #FF8F00; color: #fff; }
+.analysis-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.analysis-word-tag {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.analysis-word-tag.r-S { background: #E3F2FD; color: #1565C0; }
+.analysis-word-tag.r-V { background: #FFF3E0; color: #E65100; }
+.analysis-word-tag.r-O { background: #F3E5F5; color: #7B1FA2; }
+.analysis-word-tag.r-L { background: #E0F7FA; color: #00838F; }
+.analysis-word-tag.r-P { background: #FCE4EC; color: #C2185B; }
+
+/* ===== Sentence Transition ===== */
+.sentence-transition {
+  text-align: center;
+  padding: 60px 20px;
+  animation: fadeIn 0.4s ease;
+}
+.sentence-transition .trans-num {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 8px;
+}
+.sentence-transition .trans-msg {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2E7D32;
+}
+.sentence-transition .trans-detail {
+  font-size: 13px;
+  color: #888;
+  margin-top: 6px;
+}
+
+/* ===== Legend ===== */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  color: #666;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.legend-dot {
+  width: 14px; height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.legend-dot.s-dot { background: #E3F2FD; border: 1px solid #64B5F6; }
+.legend-dot.v-dot { background: #FFF3E0; border: 1px solid #FFB74D; }
+.legend-dot.o-dot { background: #F3E5F5; border: 1px solid #CE93D8; }
+.legend-dot.l-dot { background: #E0F7FA; border: 1px solid #4DD0E1; }
+.legend-dot.p-dot { background: #FCE4EC; border: 1px solid #F48FB1; }
+
+/* ===== Result Card (Summary) ===== */
+.result-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 0.5px solid rgba(0,0,0,0.08);
+  padding: 24px 20px;
+  margin-bottom: 16px;
+}
+.result-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #2E7D32;
+}
+.result-sentence {
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: #FAFAFA;
+  border-radius: 8px;
+}
+.result-clauses {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.result-clause-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+.result-clause-label {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.result-clause-label.main-label { background: #E8F5E9; color: #2E7D32; }
+.result-clause-label.sub-label  { background: #FFF8E1; color: #FF8F00; }
+.result-time {
+  font-size: 12px;
+  color: #888;
+  margin-top: 6px;
+}
+.result-errors {
+  font-size: 12px;
+  color: #C62828;
+  margin-top: 2px;
+}
+
+/* ===== Summary Screen ===== */
+#summaryScreen { display: none; }
+#summaryScreen.show { display: block; }
+.summary-header {
+  text-align: center;
+  padding: 36px 20px;
+  background: #fff;
+  border-radius: 16px;
+  border: 0.5px solid rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+.summary-header h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.summary-header .summary-score {
+  font-size: 52px;
+  font-weight: 700;
+  color: #2E7D32;
+  margin: 12px 0;
+}
+.summary-header .summary-detail {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.8;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .sentence-area { font-size: 16px; padding: 16px; line-height: 2.6; }
+  .role-selector { gap: 6px; }
+  .role-btn { padding: 5px 12px; font-size: 12px; }
+  .header-right { gap: 6px; }
+  .timer-chip, .error-chip, .remaining-chip { font-size: 12px; padding: 3px 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     START SCREEN
+     ============================================================ -->
+<div id="startScreen">
+  <div class="start-card">
+    <div class="start-logo">句</div>
+    <h2>长难句 · 主谓宾分析</h2>
+    <p>找出长难句中的核心语法成分<br>选择角色，点击单词，标注主谓宾<br><span style="font-size:12px;color:#aaa">共 60 句 · 每次随机 5 句 · 记录用时与错误</span></p>
+    <button class="start-btn" onclick="startPractice()">开始练习</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN APP
+     ============================================================ -->
+<div id="appScreen" style="display:none">
+  <div class="page-header">
+    <div class="logo-badge">句</div>
+    <div>
+      <h1>长难句 · 主谓宾分析</h1>
+      <p>选择角色 → 点击单词 → 标注语法成分</p>
+    </div>
+    <div class="header-right">
+      <div class="remaining-chip">剩余 <span id="remainingText">0</span></div>
+      <div class="timer-chip">⏱ <span id="timerText">0.0s</span></div>
+      <div class="error-chip">✗ <span id="errorText">0</span></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="progressText">第 1 句 / 共 10 句</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Main content area -->
+    <div id="mainContent">
+      <!-- Legend -->
+      <div class="legend" id="legendArea">
+        <div class="legend-item"><div class="legend-dot s-dot"></div>主语 S</div>
+        <div class="legend-item"><div class="legend-dot v-dot"></div>谓语 V</div>
+        <div class="legend-item"><div class="legend-dot o-dot"></div>宾语 O</div>
+        <div class="legend-item"><div class="legend-dot l-dot"></div>系动词 L</div>
+        <div class="legend-item"><div class="legend-dot p-dot"></div>表语 P</div>
+      </div>
+
+      <!-- Task hint (generic, no clause info) -->
+      <div class="task-hint" id="taskHint">
+        <span class="hint-icon">提示</span>
+        <span>找出句子中所有核心成分（主语、谓语、宾语、系动词、表语），选择角色后点击对应单词</span>
+      </div>
+
+      <!-- Role selector -->
+      <div class="role-selector" id="roleSelector">
+        <span class="role-label">选择角色：</span>
+        <button class="role-btn" data-role="S" onclick="selectRole('S')">主语 S</button>
+        <button class="role-btn" data-role="V" onclick="selectRole('V')">谓语 V</button>
+        <button class="role-btn" data-role="O" onclick="selectRole('O')">宾语 O</button>
+        <button class="role-btn" data-role="L" onclick="selectRole('L')">系动词 L</button>
+        <button class="role-btn" data-role="P" onclick="selectRole('P')">表语 P</button>
+        <button class="undo-btn" id="undoBtn" onclick="undoLast()" disabled>↩ 撤销</button>
+      </div>
+
+      <!-- Sentence display -->
+      <div class="sentence-area" id="sentenceArea"></div>
+
+      <!-- Feedback -->
+      <div class="feedback-box" id="feedbackBox"></div>
+
+      <!-- Submit button -->
+      <div class="submit-area" id="submitArea">
+        <button class="submit-btn" id="submitBtn" onclick="submitAnswer()">确认完成</button>
+      </div>
+
+      <!-- Analysis panel (shown after submit) -->
+      <div id="analysisPanel"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SUMMARY SCREEN
+     ============================================================ -->
+<div id="summaryScreen">
+  <div class="page-header">
+    <div class="logo-badge">句</div>
+    <div>
+      <h1>练习完成</h1>
+      <p>本次练习结果总结</p>
+    </div>
+  </div>
+  <div class="container" id="summaryContent"></div>
+</div>
+
+<script>
+// 长难句60句语法标注数据
+// 格式: { text, clauses: [{ type, label, words: [{idx, role}] }] }
+// role: S=主语 V=谓语 O=宾语 L=系动词 P=表语
+// idx: 对应 text.split(/\s+/) 后的词索引(从0开始)
+// 标点符号前加空格使其成为独立token
+// 不在words中的词 = 修饰成分(定语/状语/介词短语等)，显示为灰色
+
+const SENTENCES = [
+  // ===== 句1 =====
+  // "Bats comprise roughly one-fifth of all mammal species in Madagascar and thirty-six recorded bat species are native to the island , making it one of the most important regions for conservation of this animal group anywhere in the world ."
+  // 分词: 0=Bats 1=comprise 2=roughly 3=one-fifth 4=of 5=all 6=mammal 7=species 8=in 9=Madagascar
+  //        10=and 11=thirty-six 12=recorded 13=bat 14=species 15=are 16=native 17=to 18=the 19=island
+  //        20=, 21=making 22=it 23=one 24=of 25=the 26=most 27=important 28=regions 29=for
+  //        30=conservation 31=of 32=this 33=animal 34=group 35=anywhere 36=in 37=the 38=world 39=.
+  {
+    text: "Bats comprise roughly one-fifth of all mammal species in Madagascar and thirty-six recorded bat species are native to the island , making it one of the most important regions for conservation of this animal group anywhere in the world .",
+    clauses: [
+      {
+        type: "main",
+        label: "并列主句1",
+        words: [
+          { idx: 0, role: "S" },   // Bats
+          { idx: 1, role: "V" },   // comprise
+          { idx: 3, role: "O" }    // one-fifth
+        ]
+      },
+      {
+        type: "main",
+        label: "并列主句2",
+        words: [
+          { idx: 11, role: "S" },  // thirty-six
+          { idx: 12, role: "S" },  // recorded
+          { idx: 13, role: "S" },  // bat
+          { idx: 14, role: "S" },  // species
+          { idx: 15, role: "L" },  // are
+          { idx: 16, role: "P" }   // native
+        ]
+      },
+      {
+        type: "sub",
+        label: "结果状语",
+        words: [
+          { idx: 22, role: "S" },  // it
+          { idx: 21, role: "V" }   // making
+        ]
+      }
+    ]
+  },
+
+  // ===== 句2 =====
+  // "The processes through which past societies have undermined themselves by damaging their environments fall into eight categories , whose relative importance differs from case to case : deforestation and habitat destruction , soil problems , water management problems , overhunting , overfishing , effects of introduced species on native species , human population growth , and increased impact of people ."
+  // 分词: 0=The 1=processes 2=through 3=which 4=past 5=societies 6=have 7=undermined 8=themselves
+  //        9=by 10=damaging 11=their 12=environments 13=fall 14=into 15=eight 16=categories
+  //        17=, 18=whose 19=relative 20=importance 21=differs 22=from 23=case 24=to 25=case
+  //        26=: 27=deforestation 28=and 29=habitat 30=destruction 31=, 32=soil 33=problems
+  //        33=soil 34=problems 35=, 36=water 37=management 38=problems 39=, 40=overhunting
+  //        41=, 42=overfishing 43=, 44=effects 45=of 46=introduced 47=species 48=on 49=native
+  //        50=species 51=, 52=human 53=population 54=growth 55=, 56=and 57=increased 58=impact
+  //        59=of 60=people 61=.
+  {
+    text: "The processes through which past societies have undermined themselves by damaging their environments fall into eight categories , whose relative importance differs from case to case : deforestation and habitat destruction , soil problems , water management problems , overhunting , overfishing , effects of introduced species on native species , human population growth , and increased impact of people .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // The
+          { idx: 1, role: "S" },   // processes
+          { idx: 13, role: "V" },  // fall
+          { idx: 14, role: "V" },  // into
+          { idx: 15, role: "O" },  // eight
+          { idx: 16, role: "O" }   // categories
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句1",
+        words: [
+          { idx: 4, role: "S" },   // past
+          { idx: 5, role: "S" },   // societies
+          { idx: 6, role: "V" },   // have
+          { idx: 7, role: "V" },   // undermined
+          { idx: 8, role: "O" }    // themselves
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句2",
+        words: [
+          { idx: 19, role: "S" },  // relative
+          { idx: 20, role: "S" },  // importance
+          { idx: 21, role: "V" }   // differs
+        ]
+      }
+    ]
+  },
+
+  // ===== 句3 =====
+  // "It has been pointed out that learning mathematics and science is not so much learning facts as learning ways of thinking ."
+  // 0=It 1=has 2=been 3=pointed 4=out 5=that 6=learning 7=mathematics 8=and 9=science
+  // 10=is 11=not 12=so 13=much 14=learning 15=facts 16=as 17=learning 18=ways 19=of 20=thinking 21=.
+  {
+    text: "It has been pointed out that learning mathematics and science is not so much learning facts as learning ways of thinking .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // It
+          { idx: 2, role: "V" }    // been (pointed out) - has been pointed out 整体谓语
+        ]
+      },
+      {
+        type: "sub",
+        label: "主语从句",
+        words: [
+          { idx: 6, role: "S" },   // learning
+          { idx: 7, role: "S" },   // mathematics
+          { idx: 8, role: "S" },   // and
+          { idx: 9, role: "S" },   // science
+          { idx: 10, role: "L" },  // is
+          { idx: 14, role: "P" }   // learning
+        ]
+      }
+    ]
+  },
+
+  // ===== 句4 =====
+  // "Researchers found support for the idea that children in the groups with dissimilar views progressed more after their training sessions than those who had been placed in groups with similar views ."
+  // 0=Researchers 1=found 2=support 3=for 4=the 5=idea 6=that 7=children 8=in 9=the
+  // 10=groups 11=with 12=dissimilar 13=views 14=progressed 15=more 16=after 17=their 18=training 19=sessions
+  // 20=than 21=those 22=who 23=had 24=been 25=placed 26=in 27=groups 28=with 29=similar 30=views 31=.
+  {
+    text: "Researchers found support for the idea that children in the groups with dissimilar views progressed more after their training sessions than those who had been placed in groups with similar views .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Researchers
+          { idx: 1, role: "V" },   // found
+          { idx: 2, role: "O" }    // support
+        ]
+      },
+      {
+        type: "sub",
+        label: "同位语从句",
+        words: [
+          { idx: 7, role: "S" },   // children
+          { idx: 14, role: "V" }   // progressed
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 21, role: "S" },  // those
+          { idx: 24, role: "V" }   // been (had been placed)
+        ]
+      }
+    ]
+  },
+
+  // ===== 句5 =====
+  // "But now and then , hunter-gatherers must have discovered rare mutant plants that produced seedless , edible fruits ."
+  // 0=But 1=now 2=and 3=then 4=, 5=hunter-gatherers 6=must 7=have 8=discovered 9=rare
+  // 10=mutant 11=plants 12=that 13=produced 14=seedless 15=, 16=edible 17=fruits 18=.
+  {
+    text: "But now and then , hunter-gatherers must have discovered rare mutant plants that produced seedless , edible fruits .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 5, role: "S" },   // hunter-gatherers
+          { idx: 8, role: "V" },   // discovered
+          { idx: 11, role: "O" }   // plants
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 13, role: "V" },  // produced
+          { idx: 17, role: "O" }   // fruits
+        ]
+      }
+    ]
+  },
+
+  // ===== 句6 =====
+  // "To think of geniuses and the gifted as having uniquely different brains is only reasonable if we accept that each human brain is uniquely different ."
+  // 0=To 1=think 2=of 3=geniuses 4=and 5=the 6=gifted 7=as 8=having 9=uniquely
+  // 10=different 11=brains 12=is 13=only 14=reasonable 15=if 16=we 17=accept 18=that
+  // 19=each 20=human 21=brain 22=is 23=uniquely 24=different 25=.
+  {
+    text: "To think of geniuses and the gifted as having uniquely different brains is only reasonable if we accept that each human brain is uniquely different .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // To (think...brains=主语不定式短语的核心词)
+          { idx: 12, role: "L" },  // is
+          { idx: 14, role: "P" }   // reasonable
+        ]
+      },
+      {
+        type: "sub",
+        label: "条件状语从句",
+        words: [
+          { idx: 16, role: "S" },  // we
+          { idx: 17, role: "V" }   // accept
+        ]
+      },
+      {
+        type: "sub",
+        label: "宾语从句",
+        words: [
+          { idx: 19, role: "S" },  // each
+          { idx: 20, role: "S" },  // human
+          { idx: 21, role: "S" },  // brain
+          { idx: 22, role: "L" },  // is
+          { idx: 24, role: "P" }   // different
+        ]
+      }
+    ]
+  },
+
+  // ===== 句7 =====
+  // "Not to be left behind are the disease-spreading pests , about 100 species of which have become immune to a variety of insecticides now in use ."
+  // 0=Not 1=to 2=be 3=left 4=behind 5=are 6=the 7=disease-spreading 8=pests
+  // 9=, 10=about 11=100 12=species 13=of 14=which 15=have 16=become 17=immune
+  // 18=to 19=a 20=variety 21=of 22=insecticides 23=now 24=in 25=use 26=.
+  {
+    text: "Not to be left behind are the disease-spreading pests , about 100 species of which have become immune to a variety of insecticides now in use .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Not (to be left behind=主语不定式短语)
+          { idx: 5, role: "L" },   // are
+          { idx: 6, role: "P" },   // the
+          { idx: 7, role: "P" },   // disease-spreading
+          { idx: 8, role: "P" }    // pests
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 11, role: "S" },  // 100
+          { idx: 12, role: "S" },  // species
+          { idx: 15, role: "V" },  // have
+          { idx: 16, role: "L" },  // become
+          { idx: 17, role: "P" }   // immune
+        ]
+      }
+    ]
+  },
+
+  // ===== 句8 =====
+  // "It is only when the faculty of smell is impaired for some reason that we begin to realize the essential role the sense of smell plays in our sense of well-being ."
+  // 0=It 1=is 2=only 3=when 4=the 5=faculty 6=of 7=smell 8=is 9=impaired
+  // 10=for 11=some 12=reason 13=that 14=we 15=begin 16=to 17=realize 18=the
+  // 19=essential 20=role 21=the 22=sense 23=of 24=smell 25=plays 26=in 27=our
+  // 28=sense 29=of 30=well-being 31=.
+  {
+    text: "It is only when the faculty of smell is impaired for some reason that we begin to realize the essential role the sense of smell plays in our sense of well-being .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句(强调句)",
+        words: [
+          { idx: 0, role: "S" },   // It
+          { idx: 1, role: "L" },   // is
+          { idx: 14, role: "S" },  // we
+          { idx: 15, role: "V" }   // begin
+        ]
+      },
+      {
+        type: "sub",
+        label: "时间状语从句(被强调部分)",
+        words: [
+          { idx: 4, role: "S" },   // the
+          { idx: 5, role: "S" },   // faculty
+          { idx: 8, role: "L" },   // is
+          { idx: 9, role: "P" }    // impaired
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 21, role: "S" },  // the
+          { idx: 22, role: "S" },  // sense
+          { idx: 25, role: "V" }   // plays
+        ]
+      }
+    ]
+  },
+
+  // ===== 句9 =====
+  // "Neither Western supermarket consumers nor peasant growers like the new hybrid ."
+  // 0=Neither 1=Western 2=supermarket 3=consumers 4=nor 5=peasant 6=growers
+  // 7=like 8=the 9=new 10=hybrid 11=.
+  {
+    text: "Neither Western supermarket consumers nor peasant growers like the new hybrid .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 1, role: "S" },   // Western
+          { idx: 2, role: "S" },   // supermarket
+          { idx: 3, role: "S" },   // consumers
+          { idx: 5, role: "S" },   // peasant
+          { idx: 6, role: "S" },   // growers
+          { idx: 7, role: "V" },   // like
+          { idx: 9, role: "O" },   // new
+          { idx: 10, role: "O" }   // hybrid
+        ]
+      }
+    ]
+  },
+
+  // ===== 句10 =====
+  // "While the travelers' accounts give much valuable information of the local cultures and histories , they are also a mirror to the travelers themselves , for these accounts help them to have a better understanding of themselves ."
+  // 0=While 1=the 2=travelers' 3=accounts 4=give 5=much 6=valuable 7=information
+  // 8=of 9=the 10=local 11=cultures 12=and 13=histories 14=, 15=they 16=are
+  // 17=also 18=a 19=mirror 20=to 21=the 22=travelers 23=themselves 24=, 25=for
+  // 26=these 27=accounts 28=help 29=them 30=to 31=have 32=a 33=better
+  // 34=understanding 35=of 36=themselves 37=.
+  {
+    text: "While the travelers' accounts give much valuable information of the local cultures and histories , they are also a mirror to the travelers themselves , for these accounts help them to have a better understanding of themselves .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 15, role: "S" },  // they
+          { idx: 16, role: "L" },  // are
+          { idx: 18, role: "P" },  // a
+          { idx: 19, role: "P" }   // mirror
+        ]
+      },
+      {
+        type: "sub",
+        label: "让步状语从句",
+        words: [
+          { idx: 1, role: "S" },   // the
+          { idx: 2, role: "S" },   // travelers'
+          { idx: 3, role: "S" },   // accounts
+          { idx: 4, role: "V" },   // give
+          { idx: 7, role: "O" }    // information
+        ]
+      },
+      {
+        type: "sub",
+        label: "原因状语从句",
+        words: [
+          { idx: 26, role: "S" },  // these
+          { idx: 27, role: "S" },  // accounts
+          { idx: 28, role: "V" },  // help
+          { idx: 29, role: "O" }   // them
+        ]
+      }
+    ]
+  },
+
+  // ===== 句11 =====
+  // "Among the pioneer of this botanical treasure hunt was John Tradescant , an English royal gardener who brought back plants and seeds from his journeys abroad in the early 1600s ."
+  // 0=Among 1=the 2=pioneer 3=of 4=this 5=botanical 6=treasure 7=hunt 8=was
+  // 9=John 10=Tradescant 11=, 12=an 13=English 14=royal 15=gardener 16=who
+  // 17=brought 18=back 19=plants 20=and 21=seeds 22=from 23=his 24=journeys
+  // 25=abroad 26=in 27=the 28=early 29=1600s 30=.
+  {
+    text: "Among the pioneer of this botanical treasure hunt was John Tradescant , an English royal gardener who brought back plants and seeds from his journeys abroad in the early 1600s .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句(倒装)",
+        words: [
+          { idx: 8, role: "L" },   // was
+          { idx: 9, role: "S" },   // John
+          { idx: 10, role: "S" }   // Tradescant
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 17, role: "V" },  // brought
+          { idx: 19, role: "O" },  // plants
+          { idx: 21, role: "O" }   // seeds
+        ]
+      }
+    ]
+  },
+
+  // ===== 句12 =====
+  // "Simply having previous experience with AI can significantly improve people's opinions about the technology , as was found in the study mentioned above ."
+  // 0=Simply 1=having 2=previous 3=experience 4=with 5=AI 6=can 7=significantly
+  // 8=improve 9=people's 10=opinions 11=about 12=the 13=technology 14=, 15=as
+  // 16=was 17=found 18=in 19=the 20=study 21=mentioned 22=above 23=.
+  {
+    text: "Simply having previous experience with AI can significantly improve people's opinions about the technology , as was found in the study mentioned above .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 1, role: "S" },   // having
+          { idx: 6, role: "V" },   // can
+          { idx: 8, role: "V" },   // improve
+          { idx: 9, role: "O" },   // people's
+          { idx: 10, role: "O" }   // opinions
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句(as)",
+        words: [
+          { idx: 15, role: "S" },  // as
+          { idx: 16, role: "V" }   // was
+        ]
+      }
+    ]
+  },
+
+  // ===== 句13 =====
+  // "He attempted to counter the effect of clouding that sometimes occurred in blown glass by introducing lead to the raw materials used in the process ."
+  // 0=He 1=attempted 2=to 3=counter 4=the 5=effect 6=of 7=clouding 8=that
+  // 9=sometimes 10=occurred 11=in 12=blown 13=glass 14=by 15=introducing 16=lead
+  // 17=to 18=the 19=raw 20=materials 21=used 22=in 23=the 24=process 25=.
+  {
+    text: "He attempted to counter the effect of clouding that sometimes occurred in blown glass by introducing lead to the raw materials used in the process .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // He
+          { idx: 1, role: "V" },   // attempted
+          { idx: 3, role: "O" }    // counter
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 10, role: "V" }   // occurred
+        ]
+      }
+    ]
+  },
+
+  // ===== 句14 =====
+  // "Rewilding is a rare example of an environmental movement in which campaigners articulate what they are for rather than what they are against ."
+  // 0=Rewilding 1=is 2=a 3=rare 4=example 5=of 6=an 7=environmental 8=movement
+  // 9=in 10=which 11=campaigners 12=articulate 13=what 14=they 15=are 16=for
+  // 17=rather 18=than 19=what 20=they 21=are 22=against 23=.
+  {
+    text: "Rewilding is a rare example of an environmental movement in which campaigners articulate what they are for rather than what they are against .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Rewilding
+          { idx: 1, role: "L" },   // is
+          { idx: 2, role: "P" },   // a
+          { idx: 3, role: "P" },   // rare
+          { idx: 4, role: "P" }    // example
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 11, role: "S" },  // campaigners
+          { idx: 12, role: "V" },  // articulate
+          { idx: 13, role: "O" }   // what(宾语从句整体作宾语)
+        ]
+      },
+      {
+        type: "sub",
+        label: "宾语从句1",
+        words: [
+          { idx: 14, role: "S" },  // they
+          { idx: 15, role: "L" },  // are
+          { idx: 16, role: "P" }   // for
+        ]
+      },
+      {
+        type: "sub",
+        label: "宾语从句2",
+        words: [
+          { idx: 20, role: "S" },  // they
+          { idx: 21, role: "L" },  // are
+          { idx: 22, role: "P" }   // against
+        ]
+      }
+    ]
+  },
+
+  // ===== 句15 =====
+  // "Compared to common treatment facilities , wetlands are lower in cost investment , lesser to maintain , and are ideal for densely populated rural or suburban areas rather than urban areas ."
+  // 0=Compared 1=to 2=common 3=treatment 4=facilities 5=, 6=wetlands 7=are
+  // 8=lower 9=in 10=cost 11=investment 12=, 13=lesser 14=to 15=maintain 16=,
+  // 17=and 18=are 19=ideal 20=for 21=densely 22=populated 23=rural 24=or
+  // 25=suburban 26=areas 27=rather 28=than 29=urban 30=areas 31=.
+  {
+    text: "Compared to common treatment facilities , wetlands are lower in cost investment , lesser to maintain , and are ideal for densely populated rural or suburban areas rather than urban areas .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 6, role: "S" },   // wetlands
+          { idx: 7, role: "L" },   // are
+          { idx: 8, role: "P" },   // lower
+          { idx: 18, role: "L" },  // are
+          { idx: 19, role: "P" }   // ideal
+        ]
+      }
+    ]
+  },
+
+  // ===== 句16 =====
+  // "It is not known whether the associated response is a positive prognosis for recovery , nor whether yawning is therapeutic for reinnervation or prevention of muscular atrophy ."
+  // 0=It 1=is 2=not 3=known 4=whether 5=the 6=associated 7=response 8=is 9=a
+  // 10=positive 11=prognosis 12=for 13=recovery 14=, 15=nor 16=whether
+  // 17=yawning 18=is 19=therapeutic 20=for 21=reinnervation 22=or 23=prevention
+  // 24=of 25=muscular 26=atrophy 27=.
+  {
+    text: "It is not known whether the associated response is a positive prognosis for recovery , nor whether yawning is therapeutic for reinnervation or prevention of muscular atrophy .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // It
+          { idx: 3, role: "V" }    // known
+        ]
+      },
+      {
+        type: "sub",
+        label: "主语从句1",
+        words: [
+          { idx: 5, role: "S" },   // the
+          { idx: 6, role: "S" },   // associated
+          { idx: 7, role: "S" },   // response
+          { idx: 8, role: "L" },   // is
+          { idx: 9, role: "P" },   // a
+          { idx: 10, role: "P" },  // positive
+          { idx: 11, role: "P" }   // prognosis
+        ]
+      },
+      {
+        type: "sub",
+        label: "主语从句2",
+        words: [
+          { idx: 17, role: "S" },  // yawning
+          { idx: 18, role: "L" },  // is
+          { idx: 19, role: "P" }   // therapeutic
+        ]
+      }
+    ]
+  },
+
+  // ===== 句17 =====
+  // "On the question of mitigating the risks farmers face , most essayists called for greater state intervention ."
+  // 0=On 1=the 2=question 3=of 4=mitigating 5=the 6=risks 7=farmers 8=face
+  // 9=, 10=most 11=essayists 12=called 13=for 14=greater 15=state 16=intervention 17=.
+  {
+    text: "On the question of mitigating the risks farmers face , most essayists called for greater state intervention .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 10, role: "S" },  // most
+          { idx: 11, role: "S" },  // essayists
+          { idx: 12, role: "V" }   // called
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 7, role: "S" },   // farmers
+          { idx: 8, role: "V" }    // face
+        ]
+      }
+    ]
+  },
+
+  // ===== 句18 =====
+  // "Around the world , bamboo species are routinely protected as part of forest ecosystem in national parks and reserves , but there is next to nothing that protects bamboo in the wild for its own sake ."
+  // 0=Around 1=the 2=world 3=, 4=bamboo 5=species 6=are 7=routinely 8=protected
+  // 9=as 10=part 11=of 12=forest 13=ecosystem 14=in 15=national 16=parks 17=and
+  // 18=reserves 19=, 20=but 21=there 22=is 23=next 24=to 25=nothing 26=that
+  // 27=protects 28=bamboo 29=in 30=the 31=wild 32=for 33=its 34=own 35=sake 36=.
+  {
+    text: "Around the world , bamboo species are routinely protected as part of forest ecosystem in national parks and reserves , but there is next to nothing that protects bamboo in the wild for its own sake .",
+    clauses: [
+      {
+        type: "main",
+        label: "并列主句1",
+        words: [
+          { idx: 4, role: "S" },   // bamboo
+          { idx: 5, role: "S" },   // species
+          { idx: 8, role: "V" }    // protected
+        ]
+      },
+      {
+        type: "main",
+        label: "并列主句2",
+        words: [
+          { idx: 21, role: "S" },  // there
+          { idx: 22, role: "L" },  // is
+          { idx: 25, role: "P" }   // nothing
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 27, role: "V" },  // protects
+          { idx: 28, role: "O" }   // bamboo
+        ]
+      }
+    ]
+  },
+
+  // ===== 句19 =====
+  // "A similar strategy – accelerated development combined with a resting stage – has also allowed amphibians to inhabit deserts ."
+  // 0=A 1=similar 2=strategy 3=– 4=accelerated 5=development 6=combined 7=with
+  // 8=a 9=resting 10=stage 11=– 12=has 13=also 14=allowed 15=amphibians 16=to
+  // 17=inhabit 18=deserts 19=.
+  {
+    text: "A similar strategy – accelerated development combined with a resting stage – has also allowed amphibians to inhabit deserts .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // A
+          { idx: 1, role: "S" },   // similar
+          { idx: 2, role: "S" },   // strategy
+          { idx: 14, role: "V" },  // allowed
+          { idx: 15, role: "O" }   // amphibians
+        ]
+      }
+    ]
+  },
+
+  // ===== 句20 =====
+  // "There are so many insects that , without some manner of targeted approach , investigating this huge variety of species is a daunting task ."
+  // 0=There 1=are 2=so 3=many 4=insects 5=that 6=, 7=without 8=some 9=manner
+  // 10=of 11=targeted 12=approach 13=, 14=investigating 15=this 16=huge 17=variety
+  // 18=of 19=species 20=is 21=a 22=daunting 23=task 24=.
+  {
+    text: "There are so many insects that , without some manner of targeted approach , investigating this huge variety of species is a daunting task .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // There
+          { idx: 1, role: "L" },   // are
+          { idx: 4, role: "P" }    // insects
+        ]
+      },
+      {
+        type: "sub",
+        label: "结果状语从句",
+        words: [
+          { idx: 14, role: "S" },  // investigating
+          { idx: 20, role: "L" },  // is
+          { idx: 21, role: "P" },  // a
+          { idx: 22, role: "P" },  // daunting
+          { idx: 23, role: "P" }   // task
+        ]
+      }
+    ]
+  },
+
+  // ===== 句21 =====
+  // "Space in Asia is very much influenced by the competitive commercial space sector , the emergence of low cost mini-satellites , and the globalization of industrial and financial markets ."
+  // 0=Space 1=in 2=Asia 3=is 4=very 5=much 6=influenced 7=by 8=the 9=competitive
+  // 10=commercial 11=space 12=sector 13=, 14=the 15=emergence 16=of 17=low 18=cost
+  // 19=mini-satellites 20=, 21=and 22=the 23=globalization 24=of 25=industrial
+  // 26=and 27=financial 28=markets 29=.
+  {
+    text: "Space in Asia is very much influenced by the competitive commercial space sector , the emergence of low cost mini-satellites , and the globalization of industrial and financial markets .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Space
+          { idx: 3, role: "L" },   // is
+          { idx: 6, role: "P" }    // influenced
+        ]
+      }
+    ]
+  },
+
+  // ===== 句22 =====
+  // "Paleolithic artists not only painted with pigments but also created engravings by scratching designs into rock with pointed tools , as well as creating low-relief sculptures ."
+  // 0=Paleolithic 1=artists 2=not 3=only 4=painted 5=with 6=pigments 7=but
+  // 8=also 9=created 10=engravings 11=by 12=scratching 13=designs 14=into 15=rock
+  // 16=with 17=pointed 18=tools 19=, 20=as 21=well 22=as 23=creating 24=low-relief
+  // 25=sculptures 26=.
+  {
+    text: "Paleolithic artists not only painted with pigments but also created engravings by scratching designs into rock with pointed tools , as well as creating low-relief sculptures .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Paleolithic
+          { idx: 1, role: "S" },   // artists
+          { idx: 4, role: "V" },   // painted
+          { idx: 9, role: "V" },   // created
+          { idx: 10, role: "O" }   // engravings
+        ]
+      }
+    ]
+  },
+
+  // ===== 句23 =====
+  // "Though there is little debate that catastrophic events caused the mass distinction of several of Earth's species , namely the dinosaurs , geologists still question whether asteroids , volcanoes , or other natural disasters were the cause ."
+  // 0=Though 1=there 2=is 3=little 4=debate 5=that 6=catastrophic 7=events
+  // 8=caused 9=the 10=mass 11=distinction 12=of 13=several 14=of 15=Earth's
+  // 16=species 17=, 18=namely 19=the 20=dinosaurs 21=, 22=geologists 23=still
+  // 24=question 25=whether 26=asteroids 27=, 28=volcanoes 29=, 30=or 31=other
+  // 32=natural 33=disasters 34=were 35=the 36=cause 37=.
+  {
+    text: "Though there is little debate that catastrophic events caused the mass distinction of several of Earth's species , namely the dinosaurs , geologists still question whether asteroids , volcanoes , or other natural disasters were the cause .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 22, role: "S" },  // geologists
+          { idx: 24, role: "V" },  // question
+          { idx: 25, role: "O" }   // whether
+        ]
+      },
+      {
+        type: "sub",
+        label: "让步状语从句",
+        words: [
+          { idx: 1, role: "S" },   // there
+          { idx: 2, role: "L" },   // is
+          { idx: 4, role: "P" }    // debate
+        ]
+      },
+      {
+        type: "sub",
+        label: "同位语从句",
+        words: [
+          { idx: 6, role: "S" },   // catastrophic
+          { idx: 7, role: "S" },   // events
+          { idx: 8, role: "V" },   // caused
+          { idx: 10, role: "O" },  // mass
+          { idx: 11, role: "O" }   // distinction
+        ]
+      },
+      {
+        type: "sub",
+        label: "宾语从句",
+        words: [
+          { idx: 26, role: "S" },  // asteroids
+          { idx: 28, role: "S" },  // volcanoes
+          { idx: 31, role: "S" },  // other
+          { idx: 32, role: "S" },  // natural
+          { idx: 33, role: "S" },  // disasters
+          { idx: 34, role: "L" },  // were
+          { idx: 36, role: "P" }   // cause
+        ]
+      }
+    ]
+  },
+
+  // ===== 句24 =====
+  // "For those with high achievement needs , typically a minority in any organization , the existence of external goals is less important because high achievers are already internally motivated ."
+  // 0=For 1=those 2=with 3=high 4=achievement 5=needs 6=, 7=typically 8=a
+  // 9=minority 10=in 11=any 12=organization 13=, 14=the 15=existence 16=of
+  // 17=external 18=goals 19=is 20=less 21=important 22=because 23=high
+  // 24=achievers 25=are 26=already 27=internally 28=motivated 29=.
+  {
+    text: "For those with high achievement needs , typically a minority in any organization , the existence of external goals is less important because high achievers are already internally motivated .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 14, role: "S" },  // the
+          { idx: 15, role: "S" },  // existence
+          { idx: 19, role: "L" },  // is
+          { idx: 21, role: "P" }   // important
+        ]
+      },
+      {
+        type: "sub",
+        label: "原因状语从句",
+        words: [
+          { idx: 23, role: "S" },  // high
+          { idx: 24, role: "S" },  // achievers
+          { idx: 25, role: "L" },  // are
+          { idx: 28, role: "P" }   // motivated
+        ]
+      }
+    ]
+  },
+
+  // ===== 句25 =====
+  // "Cynthia Pury , a psychologist at Clemson University , Pedeleose's story proves the point that courage is not motivated by fearlessness , but by moral obligation ."
+  // 0=Cynthia 1=Pury 2=, 3=a 4=psychologist 5=at 6=Clemson 7=University 8=,
+  // 9=Pedeleose's 10=story 11=proves 12=the 13=point 14=that 15=courage 16=is
+  // 17=not 18=motivated 19=by 20=fearlessness 21=, 22=but 23=by 24=moral
+  // 25=obligation 26=.
+  {
+    text: "Cynthia Pury , a psychologist at Clemson University , Pedeleose's story proves the point that courage is not motivated by fearlessness , but by moral obligation .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 9, role: "S" },   // Pedeleose's
+          { idx: 10, role: "S" },  // story
+          { idx: 11, role: "V" },  // proves
+          { idx: 12, role: "O" },  // the
+          { idx: 13, role: "O" }   // point
+        ]
+      },
+      {
+        type: "sub",
+        label: "同位语从句",
+        words: [
+          { idx: 15, role: "S" },  // courage
+          { idx: 16, role: "L" },  // is
+          { idx: 18, role: "P" }   // motivated
+        ]
+      }
+    ]
+  },
+
+  // ===== 句26 =====
+  // "Modern teaching practices , the organization of desks in the classroom , poor classroom acoustics , and mechanical means of ventilation such as air conditioning units all contribute to the number of children unable to comprehend the teacher's voice ."
+  // 0=Modern 1=teaching 2=practices 3=, 4=the 5=organization 6=of 7=desks 8=in
+  // 9=the 10=classroom 11=, 12=poor 13=classroom 14=acoustics 15=, 16=and
+  // 17=mechanical 18=means 19=of 20=ventilation 21=such 22=as 23=air 24=conditioning
+  // 25=units 26=all 27=contribute 28=to 29=the 30=number 31=of 32=children
+  // 33=unable 34=to 35=comprehend 36=the 37=teacher's 38=voice 39=.
+  {
+    text: "Modern teaching practices , the organization of desks in the classroom , poor classroom acoustics , and mechanical means of ventilation such as air conditioning units all contribute to the number of children unable to comprehend the teacher's voice .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Modern
+          { idx: 1, role: "S" },   // teaching
+          { idx: 2, role: "S" },   // practices
+          { idx: 4, role: "S" },   // the
+          { idx: 5, role: "S" },   // organization
+          { idx: 12, role: "S" },  // poor
+          { idx: 13, role: "S" },  // classroom
+          { idx: 14, role: "S" },  // acoustics
+          { idx: 17, role: "S" },  // mechanical
+          { idx: 18, role: "S" },  // means
+          { idx: 27, role: "V" },  // contribute
+          { idx: 30, role: "O" }   // number
+        ]
+      }
+    ]
+  },
+
+  // ===== 句27 =====
+  // "What both Elsen and Rosenfield omit in their descriptions of blockbusters , is that people are prepared to pay a fee to see a blockbuster , and that the term blockbuster can just as easily apply to a movie or a museum exhibition ."
+  // 0=What 1=both 2=Elsen 3=and 4=Rosenfield 5=omit 6=in 7=their 8=descriptions
+  // 9=of 10=blockbusters 11=, 12=is 13=that 14=people 15=are 16=prepared 17=to
+  // 18=pay 19=a 20=fee 21=to 22=see 23=a 24=blockbuster 25=, 26=and 27=that
+  // 28=the 29=term 30=blockbuster 31=can 32=just 33=as 34=easily 35=apply
+  // 36=to 37=a 38=movie 39=or 40=a 41=museum 42=exhibition 43=.
+  {
+    text: "What both Elsen and Rosenfield omit in their descriptions of blockbusters , is that people are prepared to pay a fee to see a blockbuster , and that the term blockbuster can just as easily apply to a movie or a museum exhibition .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // What(主语从句整体作主语)
+          { idx: 12, role: "L" }   // is
+        ]
+      },
+      {
+        type: "sub",
+        label: "主语从句",
+        words: [
+          { idx: 2, role: "S" },   // Elsen
+          { idx: 4, role: "S" },   // Rosenfield
+          { idx: 5, role: "V" }    // omit
+        ]
+      },
+      {
+        type: "sub",
+        label: "表语从句1",
+        words: [
+          { idx: 14, role: "S" },  // people
+          { idx: 15, role: "L" },  // are
+          { idx: 16, role: "P" }   // prepared
+        ]
+      },
+      {
+        type: "sub",
+        label: "表语从句2",
+        words: [
+          { idx: 28, role: "S" },  // the
+          { idx: 29, role: "S" },  // term
+          { idx: 30, role: "S" },  // blockbuster
+          { idx: 35, role: "V" },  // apply
+        ]
+      }
+    ]
+  },
+
+  // ===== 句28 =====
+  // "Obesity , heart disease and diabetes are beginning to appear in a people for whom these have never before been problems ."
+  // 0=Obesity 1=, 2=heart 3=disease 4=and 5=diabetes 6=are 7=beginning 8=to
+  // 9=appear 10=in 11=a 12=people 13=for 14=whom 15=these 16=have 17=never
+  // 18=before 19=been 20=problems 21=.
+  {
+    text: "Obesity , heart disease and diabetes are beginning to appear in a people for whom these have never before been problems .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Obesity
+          { idx: 2, role: "S" },   // heart
+          { idx: 3, role: "S" },   // disease
+          { idx: 5, role: "S" },   // diabetes
+          { idx: 6, role: "V" },   // are
+          { idx: 7, role: "V" }    // beginning
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 15, role: "S" },  // these
+          { idx: 19, role: "L" },  // been
+          { idx: 20, role: "P" }   // problems
+        ]
+      }
+    ]
+  },
+
+  // ===== 句29 =====
+  // "The problem of how health-care should be allocated or apportioned , so that they are distributed in the most just and effective way , is not a new one ."
+  // 0=The 1=problem 2=of 3=how 4=health-care 5=should 6=be 7=allocated 8=or
+  // 9=apportioned 10=, 11=so 12=that 13=they 14=are 15=distributed 16=in 17=the
+  // 18=most 19=just 20=and 21=effective 22=way 23=, 24=is 25=not 26=a 27=new
+  // 28=one 29=.
+  {
+    text: "The problem of how health-care should be allocated or apportioned , so that they are distributed in the most just and effective way , is not a new one .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // The
+          { idx: 1, role: "S" },   // problem
+          { idx: 24, role: "L" },  // is
+          { idx: 26, role: "P" },  // a
+          { idx: 27, role: "P" },  // new
+          { idx: 28, role: "P" }   // one
+        ]
+      },
+      {
+        type: "sub",
+        label: "宾语从句(介词宾语)",
+        words: [
+          { idx: 4, role: "S" },   // health-care
+          { idx: 7, role: "V" },   // allocated
+          { idx: 9, role: "V" }    // apportioned
+        ]
+      },
+      {
+        type: "sub",
+        label: "目的状语从句",
+        words: [
+          { idx: 13, role: "S" },  // they
+          { idx: 14, role: "L" },  // are
+          { idx: 15, role: "P" }   // distributed
+        ]
+      }
+    ]
+  },
+
+  // ===== 句30 =====
+  // "Where tourism development has not been carefully planned , and the needs and priorities of the local community have not been properly recognized , conflict has sometimes arisen between tourism and local , small-scale fishers ."
+  // 0=Where 1=tourism 2=development 3=has 4=not 5=been 6=carefully 7=planned
+  // 8=, 9=and 10=the 11=needs 12=and 13=priorities 14=of 15=the 16=local
+  // 17=community 18=have 19=not 20=been 21=properly 22=recognized 23=, 24=conflict
+  // 25=has 26=sometimes 27=arisen 28=between 29=tourism 30=and 31=local 32=,
+  // 33=small-scale 34=fishers 35=.
+  {
+    text: "Where tourism development has not been carefully planned , and the needs and priorities of the local community have not been properly recognized , conflict has sometimes arisen between tourism and local , small-scale fishers .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 24, role: "S" },  // conflict
+          { idx: 27, role: "V" }   // arisen
+        ]
+      },
+      {
+        type: "sub",
+        label: "地点状语从句1",
+        words: [
+          { idx: 1, role: "S" },   // tourism
+          { idx: 2, role: "S" },   // development
+          { idx: 7, role: "V" }    // planned
+        ]
+      },
+      {
+        type: "sub",
+        label: "并列状语从句2",
+        words: [
+          { idx: 10, role: "S" },  // the
+          { idx: 11, role: "S" },  // needs
+          { idx: 13, role: "S" },  // priorities
+          { idx: 22, role: "V" }   // recognized
+        ]
+      }
+    ]
+  },
+
+  // ===== 句31-60 继续标注 =====
+  // 为了加快速度，我继续标注剩余30句
+
+  // ===== 句31 =====
+  {
+    text: "In a study of over 200 patients with Alzheimer's disease , a degenerative brain disease , bilingual patients reported showing initial symptoms of the disease an average of five years later than monolingual patients .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 15, role: "S" },  // bilingual
+          { idx: 16, role: "S" },  // patients
+          { idx: 17, role: "V" },  // reported
+          { idx: 18, role: "O" }   // showing
+        ]
+      }
+    ]
+  },
+
+  // ===== 句32 =====
+  {
+    text: "Even if we do not know the role a creature plays in the health of the environment , past lessons have taught us enough to know that every animal and plant is one important link in the integral chain of nature .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 14, role: "S" },  // past
+          { idx: 15, role: "S" },  // lessons
+          { idx: 17, role: "V" },  // taught
+          { idx: 18, role: "O" }   // us
+        ]
+      },
+      {
+        type: "sub",
+        label: "让步状语从句",
+        words: [
+          { idx: 2, role: "S" },   // we
+          { idx: 5, role: "V" },   // know
+          { idx: 6, role: "O" }    // the
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 8, role: "S" },   // a
+          { idx: 9, role: "S" },   // creature
+          { idx: 10, role: "V" }   // plays
+        ]
+      },
+      {
+        type: "sub",
+        label: "宾语从句",
+        words: [
+          { idx: 24, role: "S" },  // every
+          { idx: 25, role: "S" },  // animal
+          { idx: 26, role: "S" },  // and
+          { idx: 27, role: "S" },  // plant
+          { idx: 28, role: "L" },  // is
+          { idx: 29, role: "P" },  // one
+          { idx: 30, role: "P" },  // important
+          { idx: 31, role: "P" }   // link
+        ]
+      }
+    ]
+  },
+
+  // ===== 句33 =====
+  {
+    text: "Mazda achieved many triumphs with its engine firstly installed in the fore-wheel , though it gained itself a reputation as a gas-guzzler .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Mazda
+          { idx: 1, role: "V" },   // achieved
+          { idx: 2, role: "O" },   // many
+          { idx: 3, role: "O" }    // triumphs
+        ]
+      },
+      {
+        type: "sub",
+        label: "让步状语从句",
+        words: [
+          { idx: 12, role: "S" },  // it
+          { idx: 13, role: "V" },  // gained
+          { idx: 14, role: "O" },  // itself
+          { idx: 16, role: "O" }   // a
+        ]
+      }
+    ]
+  },
+
+  // ===== 句34 =====
+  {
+    text: "Although , at one level , there seem to be almost as many definitions of intelligence as people who have tried to define it , there is broad agreement on two key features .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 22, role: "S" },  // there
+          { idx: 23, role: "L" },  // is
+          { idx: 24, role: "P" },  // broad
+          { idx: 25, role: "P" }   // agreement
+        ]
+      },
+      {
+        type: "sub",
+        label: "让步状语从句",
+        words: [
+          { idx: 5, role: "S" },   // there
+          { idx: 6, role: "L" },   // seem
+          { idx: 11, role: "P" }   // definitions
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 16, role: "S" },  // people
+          { idx: 19, role: "V" },  // define
+          { idx: 21, role: "O" }   // it
+        ]
+      }
+    ]
+  },
+
+  // ===== 句35 =====
+  {
+    text: "Freshwater running off from well-fertilised farmlands , an expert claims , caused a fivefold rise in nitrogen levels in the bay .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Freshwater
+          { idx: 10, role: "V" },  // caused
+          { idx: 12, role: "O" },  // fivefold
+          { idx: 13, role: "O" }   // rise
+        ]
+      },
+      {
+        type: "sub",
+        label: "插入语从句",
+        words: [
+          { idx: 7, role: "S" },   // an
+          { idx: 8, role: "S" },   // expert
+          { idx: 9, role: "V" }    // claims
+        ]
+      }
+    ]
+  },
+
+  // ===== 句36 =====
+  {
+    text: "Actually , there has been extensive research conducted regarding the sea turtles' abilities to return to their nesting regions and sometimes exact locations from hundreds of miles away .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 2, role: "S" },   // there
+          { idx: 5, role: "L" },   // been
+          { idx: 6, role: "P" }    // extensive
+        ]
+      }
+    ]
+  },
+
+  // ===== 句37 =====
+  {
+    text: "The evidence in favour of some kind of general intellectual capacity is that people who are superior on one type of task tend also to be superior on others .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // The
+          { idx: 1, role: "S" },   // evidence
+          { idx: 10, role: "L" }   // is
+        ]
+      },
+      {
+        type: "sub",
+        label: "表语从句",
+        words: [
+          { idx: 12, role: "S" },  // people
+          { idx: 18, role: "V" },  // tend
+          { idx: 22, role: "P" }   // superior
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 13, role: "S" },  // who
+          { idx: 14, role: "L" },  // are
+          { idx: 15, role: "P" }   // superior
+        ]
+      }
+    ]
+  },
+
+  // ===== 句38 =====
+  {
+    text: "Furthermore the influences that affect verbal skills are not quite the same as those that affect other skills .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 1, role: "S" },   // the
+          { idx: 2, role: "S" },   // influences
+          { idx: 8, role: "L" },   // are
+          { idx: 12, role: "P" }   // same
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句1",
+        words: [
+          { idx: 3, role: "S" },   // that
+          { idx: 4, role: "V" },   // affect
+          { idx: 5, role: "O" },   // verbal
+          { idx: 6, role: "O" }    // skills
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句2",
+        words: [
+          { idx: 15, role: "S" },  // that
+          { idx: 16, role: "V" },  // affect
+          { idx: 17, role: "O" },  // other
+          { idx: 18, role: "O" }   // skills
+        ]
+      }
+    ]
+  },
+
+  // ===== 句39 =====
+  {
+    text: "It wasn't until the development of a reliable electric motor , and a means of transferring power from the generator to a moving train , that the world's first deep-level electric railway , the City & South London , became possible .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句(强调句)",
+        words: [
+          { idx: 0, role: "S" },   // It
+          { idx: 1, role: "L" },   // wasn't
+          { idx: 26, role: "S" },  // the
+          { idx: 27, role: "S" },  // world's
+          { idx: 28, role: "S" },  // first
+          { idx: 29, role: "S" },  // deep-level
+          { idx: 30, role: "S" },  // electric
+          { idx: 31, role: "S" },  // railway
+          { idx: 36, role: "L" },  // became
+          { idx: 37, role: "P" }   // possible
+        ]
+      }
+    ]
+  },
+
+  // ===== 句40 =====
+  {
+    text: "The first element , which has stood the test of time , is his view that the child is an active agent of learning and of the important of this activity in cognitive development .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // The
+          { idx: 1, role: "S" },   // first
+          { idx: 2, role: "S" },   // element
+          { idx: 11, role: "L" },  // is
+          { idx: 12, role: "P" },  // his
+          { idx: 13, role: "P" }   // view
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 4, role: "S" },   // which
+          { idx: 6, role: "V" },   // stood
+          { idx: 7, role: "O" },   // the
+          { idx: 8, role: "O" }    // test
+        ]
+      },
+      {
+        type: "sub",
+        label: "同位语从句",
+        words: [
+          { idx: 15, role: "S" },  // the
+          { idx: 16, role: "S" },  // child
+          { idx: 17, role: "L" },  // is
+          { idx: 18, role: "P" },  // an
+          { idx: 19, role: "P" },  // active
+          { idx: 20, role: "P" }   // agent
+        ]
+      }
+    ]
+  },
+
+  // ===== 句41 =====
+  {
+    text: "Drivers at that time were an adventurous bunch ; they would go out regardless of the weather condition even if they weren't even protected by an enclosed body or a convertible top .",
+    clauses: [
+      {
+        type: "main",
+        label: "并列主句1",
+        words: [
+          { idx: 0, role: "S" },   // Drivers
+          { idx: 4, role: "L" },   // were
+          { idx: 5, role: "P" },   // an
+          { idx: 6, role: "P" },   // adventurous
+          { idx: 7, role: "P" }    // bunch
+        ]
+      },
+      {
+        type: "main",
+        label: "并列主句2",
+        words: [
+          { idx: 9, role: "S" },   // they
+          { idx: 11, role: "V" },  // would
+          { idx: 12, role: "V" }   // go
+        ]
+      },
+      {
+        type: "sub",
+        label: "让步状语从句",
+        words: [
+          { idx: 18, role: "S" },  // they
+          { idx: 19, role: "L" },  // weren't
+          { idx: 22, role: "P" }   // protected
+        ]
+      }
+    ]
+  },
+
+  // ===== 句42 =====
+  {
+    text: "Creating mixed-use developments such as this reinforces compactness and multi-functionality , making more efficient use of land and helping to regenerate urban spaces .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Creating
+          { idx: 7, role: "V" },   // reinforces
+          { idx: 8, role: "O" },   // compactness
+          { idx: 10, role: "O" }   // multi-functionality
+        ]
+      }
+    ]
+  },
+
+  // ===== 句43 =====
+  {
+    text: "While the prospect of bring extinct animals back to life might capture imaginations , it is , of course , far easier to try to save an existing species which is merely threatened with extinction .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 12, role: "S" },  // it
+          { idx: 13, role: "L" },  // is
+          { idx: 17, role: "P" }   // easier
+        ]
+      },
+      {
+        type: "sub",
+        label: "让步状语从句",
+        words: [
+          { idx: 1, role: "S" },   // the
+          { idx: 2, role: "S" },   // prospect
+          { idx: 10, role: "V" },  // might
+          { idx: 11, role: "V" }   // capture
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 24, role: "S" },  // which
+          { idx: 25, role: "L" },  // is
+          { idx: 27, role: "P" }   // threatened
+        ]
+      }
+    ]
+  },
+
+  // ===== 句44 =====
+  {
+    text: "These grow on the bay's muddy floor and act as nurseries for the larvae of shrimps , lobsters and fish – many of the important sport and commercial-fishing species .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // These
+          { idx: 1, role: "V" },   // grow
+          { idx: 9, role: "V" }    // act
+        ]
+      }
+    ]
+  },
+
+  // ===== 句45 =====
+  {
+    text: "When oil and gas are squeezed out of the shale in which they originated and enter a body of sandstone or limestone somewhere above , they migrate readily because sandstones and limestones are much more permeable than any shale .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 22, role: "S" },  // they
+          { idx: 23, role: "V" }   // migrate
+        ]
+      },
+      {
+        type: "sub",
+        label: "时间状语从句",
+        words: [
+          { idx: 1, role: "S" },   // oil
+          { idx: 2, role: "S" },   // and
+          { idx: 3, role: "S" },   // gas
+          { idx: 5, role: "V" },   // squeezed
+          { idx: 14, role: "V" },  // enter
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 11, role: "S" },  // they
+          { idx: 12, role: "V" }   // originated
+        ]
+      },
+      {
+        type: "sub",
+        label: "原因状语从句",
+        words: [
+          { idx: 26, role: "S" },  // sandstones
+          { idx: 27, role: "S" },  // and
+          { idx: 28, role: "S" },  // limestones
+          { idx: 29, role: "L" },  // are
+          { idx: 31, role: "P" }   // permeable
+        ]
+      }
+    ]
+  },
+
+  // ===== 句46 =====
+  {
+    text: "Captive-bred tortoises can't be reintroduced into the wild until they're at least five years old and weigh at least 4.5 kilograms , at which point their size and weight – and their hardened shells – are sufficient to protect them from predators .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Captive-bred
+          { idx: 1, role: "S" },   // tortoises
+          { idx: 4, role: "V" }    // reintroduced
+        ]
+      },
+      {
+        type: "sub",
+        label: "时间状语从句",
+        words: [
+          { idx: 8, role: "S" },   // they're
+          { idx: 13, role: "L" },  // old
+          { idx: 16, role: "V" }   // weigh
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 25, role: "S" },  // their
+          { idx: 26, role: "S" },  // size
+          { idx: 28, role: "S" },  // weight
+          { idx: 33, role: "S" },  // shells
+          { idx: 35, role: "L" },  // are
+          { idx: 36, role: "P" }   // sufficient
+        ]
+      }
+    ]
+  },
+
+  // ===== 句47 =====
+  {
+    text: "Behaviorists suggest that the child who is raised in an environment where there are many stimuli which develop his or her capacity for appropriate responses will experience greater intellectual development .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Behaviorists
+          { idx: 1, role: "V" }    // suggest
+        ]
+      },
+      {
+        type: "sub",
+        label: "宾语从句",
+        words: [
+          { idx: 3, role: "S" },   // the
+          { idx: 4, role: "S" },   // child
+          { idx: 22, role: "V" },  // will
+          { idx: 23, role: "V" },  // experience
+          { idx: 24, role: "O" },  // greater
+          { idx: 25, role: "O" }   // intellectual
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句1",
+        words: [
+          { idx: 5, role: "S" },   // who
+          { idx: 7, role: "V" }    // raised
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句2(地点)",
+        words: [
+          { idx: 12, role: "S" },  // there
+          { idx: 13, role: "L" },  // are
+          { idx: 14, role: "P" }   // many
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句3",
+        words: [
+          { idx: 16, role: "S" },  // which
+          { idx: 17, role: "V" },  // develop
+          { idx: 18, role: "O" },  // his
+          { idx: 19, role: "O" },  // or
+          { idx: 20, role: "O" }   // her
+        ]
+      }
+    ]
+  },
+
+  // ===== 句48 =====
+  {
+    text: "This role is particularly critical for top managers , who must often compete with other managers for important resources , yet must maintain successful working relationships with them for long time periods .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // This
+          { idx: 1, role: "S" },   // role
+          { idx: 2, role: "L" },   // is
+          { idx: 3, role: "P" }    // critical
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 7, role: "S" },   // who
+          { idx: 10, role: "V" },  // compete
+          { idx: 19, role: "V" },  // maintain
+          { idx: 20, role: "O" },  // successful
+          { idx: 21, role: "O" },  // working
+          { idx: 22, role: "O" }   // relationships
+        ]
+      }
+    ]
+  },
+
+  // ===== 句49 =====
+  {
+    text: "Now that most individuals have a personal device , like a smart-phone or a laptop , they are frequently reading , watching or listening to virtual information . This raises the occurrence of multitasking in our day to day life .",
+    clauses: [
+      {
+        type: "main",
+        label: "并列主句1",
+        words: [
+          { idx: 13, role: "S" },  // they
+          { idx: 14, role: "L" },  // are
+          { idx: 16, role: "P" }   // reading
+        ]
+      },
+      {
+        type: "main",
+        label: "并列主句2",
+        words: [
+          { idx: 23, role: "S" },  // This
+          { idx: 24, role: "V" },  // raises
+          { idx: 25, role: "O" }   // the
+        ]
+      },
+      {
+        type: "sub",
+        label: "原因状语从句",
+        words: [
+          { idx: 2, role: "S" },   // most
+          { idx: 3, role: "S" },   // individuals
+          { idx: 4, role: "V" },   // have
+          { idx: 5, role: "O" },   // a
+          { idx: 6, role: "O" }    // personal
+        ]
+      }
+    ]
+  },
+
+  // ===== 句50 =====
+  {
+    text: "Consideration more on the facts of the linguistic usage , rather than the standards of it , is summarized in the statement that it is the task of the grammarian to describe , not prescribe – to record the facts of linguistic diversity , and not to attempt the impossible tasks of evaluating language variation or halting language change .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Consideration
+          { idx: 14, role: "L" },  // is
+          { idx: 15, role: "V" }   // summarized
+        ]
+      },
+      {
+        type: "sub",
+        label: "同位语从句",
+        words: [
+          { idx: 19, role: "S" },  // it
+          { idx: 20, role: "L" },  // is
+          { idx: 21, role: "P" },  // the
+          { idx: 22, role: "P" },  // task
+          { idx: 25, role: "P" }   // describe
+        ]
+      }
+    ]
+  },
+
+  // ===== 句51 =====
+  {
+    text: "State promises to provide more up-to-date engines , planes , and helicopters to fight fires have been fulfilled .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // State
+          { idx: 1, role: "S" },   // promises
+          { idx: 15, role: "V" }   // fulfilled
+        ]
+      }
+    ]
+  },
+
+  // ===== 句52 =====
+  {
+    text: "Bullying can take a variety of forms , from the verbal – being taunted or called hurtful names – to the physical – being kicked or shoved – as well as indirect forms , such as being excluded from social groups .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Bullying
+          { idx: 2, role: "V" },   // take
+          { idx: 3, role: "O" },   // a
+          { idx: 4, role: "O" },   // variety
+          { idx: 5, role: "O" }    // of
+        ]
+      }
+    ]
+  },
+
+  // ===== 句53 =====
+  {
+    text: "Ants combine the evidence of visual landmarks with a mental library of local directions , all within a framework which is consulted and updated .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Ants
+          { idx: 1, role: "V" },   // combine
+          { idx: 2, role: "O" }    // the
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 16, role: "S" },  // which
+          { idx: 18, role: "V" },  // consulted
+          { idx: 20, role: "V" }   // updated
+        ]
+      }
+    ]
+  },
+
+  // ===== 句54 =====
+  {
+    text: "Summer leaves are green because they are full of chlorophyll , the molecule that captures sunlight and converts that energy into new building materials for the tree .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // Summer
+          { idx: 1, role: "S" },   // leaves
+          { idx: 2, role: "L" },   // are
+          { idx: 3, role: "P" }    // green
+        ]
+      },
+      {
+        type: "sub",
+        label: "原因状语从句",
+        words: [
+          { idx: 5, role: "S" },   // they
+          { idx: 6, role: "L" },   // are
+          { idx: 7, role: "P" }    // full
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 11, role: "S" },  // that
+          { idx: 12, role: "V" },  // captures
+          { idx: 13, role: "O" },  // sunlight
+          { idx: 15, role: "V" },  // converts
+          { idx: 17, role: "O" }   // energy
+        ]
+      }
+    ]
+  },
+
+  // ===== 句55 =====
+  {
+    text: "The bigger the mass at each end of the pole , the easier it is for the tightrope walker to maintain his or her balance . The same holds true for a pagoda .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句1(比较)",
+        words: [
+          { idx: 2, role: "S" },   // the
+          { idx: 3, role: "S" },   // mass
+          { idx: 10, role: "S" },  // it
+          { idx: 11, role: "L" }   // is
+        ]
+      },
+      {
+        type: "main",
+        label: "主句2",
+        words: [
+          { idx: 20, role: "S" },  // The
+          { idx: 21, role: "S" },  // same
+          { idx: 22, role: "V" },  // holds
+          { idx: 23, role: "P" }   // true
+        ]
+      }
+    ]
+  },
+
+  // ===== 句56 =====
+  {
+    text: "There are plenty of places around the globe where people have no access to heavy machinery , but do know how to deal with wind , sailing and basic mechanical principles .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // There
+          { idx: 1, role: "L" },   // are
+          { idx: 2, role: "P" }    // plenty
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 8, role: "S" },   // people
+          { idx: 9, role: "V" },   // have
+          { idx: 14, role: "V" },  // know
+          { idx: 15, role: "O" }   // how
+        ]
+      }
+    ]
+  },
+
+  // ===== 句57 =====
+  {
+    text: "The average captive animal will have a greater life expectancy compared with its wild counterpart .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // The
+          { idx: 1, role: "S" },   // average
+          { idx: 2, role: "S" },   // captive
+          { idx: 3, role: "S" },   // animal
+          { idx: 5, role: "V" },   // have
+          { idx: 6, role: "O" },   // a
+          { idx: 7, role: "O" },   // greater
+          { idx: 8, role: "O" }    // life
+        ]
+      }
+    ]
+  },
+
+  // ===== 句58 =====
+  {
+    text: "How caffeine works to thwart diabetes , a condition characterized by high levels of glucose in the blood , remains unknown , but glucose tolerance or more efficient glucose metabolism may be involved .",
+    clauses: [
+      {
+        type: "main",
+        label: "并列主句1",
+        words: [
+          { idx: 17, role: "V" },  // remains
+          { idx: 18, role: "P" }   // unknown
+        ]
+      },
+      {
+        type: "main",
+        label: "并列主句2",
+        words: [
+          { idx: 20, role: "S" },  // glucose
+          { idx: 24, role: "S" },  // glucose
+          { idx: 25, role: "S" },  // metabolism
+          { idx: 27, role: "L" },  // be
+          { idx: 28, role: "P" }   // involved
+        ]
+      },
+      {
+        type: "sub",
+        label: "主语从句",
+        words: [
+          { idx: 1, role: "S" },   // caffeine
+          { idx: 2, role: "V" }    // works
+        ]
+      }
+    ]
+  },
+
+  // ===== 句59 =====
+  {
+    text: "The first evidence that refuted the idea that the brain was a stable organ was produced over 30 years ago .",
+    clauses: [
+      {
+        type: "main",
+        label: "主句",
+        words: [
+          { idx: 0, role: "S" },   // The
+          { idx: 1, role: "S" },   // first
+          { idx: 2, role: "S" },   // evidence
+          { idx: 13, role: "V" }   // produced
+        ]
+      },
+      {
+        type: "sub",
+        label: "定语从句",
+        words: [
+          { idx: 3, role: "S" },   // that
+          { idx: 4, role: "V" },   // refuted
+          { idx: 5, role: "O" },   // the
+          { idx: 6, role: "O" }    // idea
+        ]
+      },
+      {
+        type: "sub",
+        label: "同位语从句",
+        words: [
+          { idx: 8, role: "S" },   // the
+          { idx: 9, role: "S" },   // brain
+          { idx: 10, role: "L" },  // was
+          { idx: 11, role: "P" },  // a
+          { idx: 12, role: "P" }   // stable
+        ]
+      }
+    ]
+  },
+
+  // ===== 句60 =====
+  {
+    text: "At the time , the casts were used for medical research and consequently , in the nineteenth century life-casting was considered inferior to sculpture in the same way that , more recently , photography was thought to be a lesser art than painting .",
+    clauses: [
+      {
+        type: "main",
+        label: "并列主句1",
+        words: [
+          { idx: 4, role: "S" },   // the
+          { idx: 5, role: "S" },   // casts
+          { idx: 6, role: "L" },   // were
+          { idx: 7, role: "P" }    // used
+        ]
+      },
+      {
+        type: "main",
+        label: "并列主句2",
+        words: [
+          { idx: 13, role: "S" },  // life-casting
+          { idx: 15, role: "L" },  // was
+          { idx: 16, role: "P" }   // considered
+        ]
+      },
+      {
+        type: "sub",
+        label: "方式状语从句",
+        words: [
+          { idx: 23, role: "S" },  // photography
+          { idx: 25, role: "V" },  // thought
+          { idx: 28, role: "P" },  // a
+          { idx: 29, role: "P" },  // lesser
+          { idx: 30, role: "P" }   // art
+        ]
+      }
+    ]
+  }
+];
+
+</script>
+<script>
+const ROLE_NAMES = { S: "主语", V: "谓语", O: "宾语", L: "系动词", P: "表语" };
+const ROLE_SHORT = { S: "主", V: "谓", O: "宾", L: "系", P: "表" };
+
+// ============================================================
+//  App State
+// ============================================================
+let state = {
+  sentenceIdx: 0,
+  currentBatch: [],         // 当前随机抽取的句子索引数组
+  selectedRole: null,
+  tokens: [],              // current sentence tokens
+  allAnswerWords: [],      // all words that need roles (flattened from all clauses)
+  userAnnotations: {},     // { tokenIdx: role } — user's current annotations
+  annotationHistory: [],   // [{idx, role}] for undo
+  errorCount: 0,
+  totalErrors: 0,
+  startTime: 0,
+  timerInterval: null,
+  results: [],
+  submitted: false         // whether current sentence has been submitted
+};
+
+// ============================================================
+//  Shuffle utility (Fisher-Yates)
+// ============================================================
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ============================================================
+//  Pick N random sentence indices
+// ============================================================
+function pickRandomSentences(n) {
+  const indices = Array.from({ length: SENTENCES.length }, (_, i) => i);
+  return shuffleArray(indices).slice(0, n);
+}
+
+// ============================================================
+//  Start
+// ============================================================
+function startPractice() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = '';
+  state.sentenceIdx = 0;
+  state.totalErrors = 0;
+  state.results = [];
+  state.currentBatch = pickRandomSentences(5);
+  loadSentence();
+}
+
+// ============================================================
+//  Load Sentence
+// ============================================================
+function loadSentence() {
+  if (state.sentenceIdx >= state.currentBatch.length) {
+    showSummary();
+    return;
+  }
+
+  const sent = SENTENCES[state.currentBatch[state.sentenceIdx]];
+  state.tokens = sent.text.split(/\s+/).filter(t => t.length > 0);
+
+  // Flatten all answer words from all clauses
+  state.allAnswerWords = [];
+  sent.clauses.forEach(clause => {
+    clause.words.forEach(w => {
+      state.allAnswerWords.push({ idx: w.idx, role: w.role, clauseType: clause.type, clauseLabel: clause.label });
+    });
+  });
+
+  state.userAnnotations = {};
+  state.annotationHistory = [];
+  state.selectedRole = null;
+  state.errorCount = 0;
+  state.submitted = false;
+
+  // Timer
+  state.startTime = Date.now();
+  startTimer();
+
+  // UI
+  updateProgress();
+  updateErrorDisplay();
+  updateRemainingDisplay();
+  resetRoleSelector();
+  hideFeedback();
+
+  renderSentence();
+}
+
+// ============================================================
+//  Render Sentence — all words look the same
+// ============================================================
+function renderSentence() {
+  const area = document.getElementById('sentenceArea');
+  area.innerHTML = '';
+
+  state.tokens.forEach((token, i) => {
+    const span = document.createElement('span');
+    span.className = 'word-token wt-ready';
+    span.textContent = token;
+    span.dataset.idx = i;
+    span.id = 'wt' + i;
+    span.addEventListener('click', () => handleWordClick(i));
+    area.appendChild(span);
+    area.appendChild(document.createTextNode(' '));
+  });
+
+  // Show submit button, hide analysis
+  document.getElementById('submitArea').style.display = '';
+  document.getElementById('analysisPanel').innerHTML = '';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = '确认完成';
+}
+
+// ============================================================
+//  Handle Word Click
+// ============================================================
+function handleWordClick(tokenIdx) {
+  if (state.submitted) return; // already submitted
+
+  if (!state.selectedRole) {
+    showFeedback('💡 请先选择一个语法角色', 'info');
+    return;
+  }
+
+  // If already annotated with the same role, remove it (toggle off)
+  if (state.userAnnotations[tokenIdx] === state.selectedRole) {
+    delete state.userAnnotations[tokenIdx];
+    state.annotationHistory = state.annotationHistory.filter(a => a.idx !== tokenIdx);
+    refreshWordDisplay();
+    updateRemainingDisplay();
+    updateUndoBtn();
+    hideFeedback();
+    return;
+  }
+
+  // Check if this word has a role in the answer
+  const answerEntry = state.allAnswerWords.find(w => w.idx === tokenIdx);
+
+  if (answerEntry) {
+    // This word IS a core component — check if role matches
+    if (state.selectedRole === answerEntry.role) {
+      // ✅ Correct
+      state.userAnnotations[tokenIdx] = state.selectedRole;
+      state.annotationHistory.push({ idx: tokenIdx, role: state.selectedRole });
+
+      const el = document.getElementById('wt' + tokenIdx);
+      if (el) el.classList.add('correct-pop');
+
+      refreshWordDisplay();
+      updateRemainingDisplay();
+      updateUndoBtn();
+
+      const remaining = state.allAnswerWords.filter(w => !(w.idx in state.userAnnotations)).length;
+      if (remaining === 0) {
+        showFeedback('✅ 所有核心成分已找出！点击"确认完成"查看解析', 'ok');
+      } else {
+        showFeedback(`✅ 正确！还剩 ${remaining} 个核心成分`, 'ok');
+      }
+    } else {
+      // ❌ Wrong role
+      state.errorCount++;
+      state.totalErrors++;
+      updateErrorDisplay();
+
+      const el = document.getElementById('wt' + tokenIdx);
+      if (el) {
+        el.classList.add('wrong-flash');
+        setTimeout(() => el.classList.remove('wrong-flash'), 500);
+      }
+
+      showFeedback(`❌ "${state.tokens[tokenIdx]}" 不是${ROLE_NAMES[state.selectedRole]}，再想想`, 'err');
+    }
+  } else {
+    // This word is NOT a core component (modifier, preposition, etc.)
+    state.errorCount++;
+    state.totalErrors++;
+    updateErrorDisplay();
+
+    const el = document.getElementById('wt' + tokenIdx);
+    if (el) {
+      el.classList.add('wrong-flash');
+      setTimeout(() => el.classList.remove('wrong-flash'), 500);
+    }
+
+    showFeedback(`❌ "${state.tokens[tokenIdx]}" 不是核心成分（主/谓/宾/系/表），再想想`, 'err');
+  }
+
+  state.selectedRole = null;
+  resetRoleSelector();
+}
+
+// ============================================================
+//  Refresh Word Display
+// ============================================================
+function refreshWordDisplay() {
+  state.tokens.forEach((_, i) => {
+    const el = document.getElementById('wt' + i);
+    if (!el) return;
+
+    // Remove old role tag if any
+    const oldTag = el.querySelector('.role-tag');
+    if (oldTag) oldTag.remove();
+
+    if (i in state.userAnnotations) {
+      const role = state.userAnnotations[i];
+      el.className = 'word-token wt-done r-' + role;
+      // Add role tag
+      const tag = document.createElement('span');
+      tag.className = 'role-tag';
+      tag.textContent = ROLE_SHORT[role];
+      el.appendChild(tag);
+    } else {
+      el.className = 'word-token wt-ready';
+    }
+  });
+}
+
+// ============================================================
+//  Undo Last Annotation
+// ============================================================
+function undoLast() {
+  if (state.annotationHistory.length === 0 || state.submitted) return;
+  const last = state.annotationHistory.pop();
+  delete state.userAnnotations[last.idx];
+  refreshWordDisplay();
+  updateRemainingDisplay();
+  updateUndoBtn();
+  hideFeedback();
+}
+
+function updateUndoBtn() {
+  const btn = document.getElementById('undoBtn');
+  if (btn) btn.disabled = state.annotationHistory.length === 0 || state.submitted;
+}
+
+// ============================================================
+//  Submit Answer — show analysis
+// ============================================================
+function submitAnswer() {
+  if (state.submitted) {
+    // Already submitted, go to next sentence
+    finishSentence();
+    return;
+  }
+
+  state.submitted = true;
+  stopTimer();
+  const elapsed = (Date.now() - state.startTime) / 1000;
+
+  // Count how many correct
+  let correctCount = 0;
+  state.allAnswerWords.forEach(w => {
+    if (state.userAnnotations[w.idx] === w.role) correctCount++;
+  });
+  const totalNeeded = state.allAnswerWords.length;
+
+  // Build analysis panel
+  const sent = SENTENCES[state.sentenceIdx];
+  let html = '<div class="analysis-panel"><div class="analysis-title">📋 从句结构解析</div>';
+
+  // Show each clause with its words
+  // Sort: main clauses first
+  const sortedClauses = [...sent.clauses].sort((a, b) => {
+    if (a.type === 'main' && b.type !== 'main') return -1;
+    if (a.type !== 'main' && b.type === 'main') return 1;
+    return 0;
+  });
+
+  sortedClauses.forEach(clause => {
+    const clauseClass = clause.type === 'main' ? 'main-clause' : 'sub-clause';
+    html += `<div class="analysis-clause ${clauseClass}">`;
+    html += `<span class="clause-label-tag">${clause.label}</span>`;
+    html += '<div class="analysis-words">';
+
+    const roleOrder = ['S', 'V', 'O', 'L', 'P'];
+    roleOrder.forEach(role => {
+      clause.words.filter(w => w.role === role).forEach(w => {
+        html += `<span class="analysis-word-tag r-${w.role}">${ROLE_SHORT[w.role]}: ${state.tokens[w.idx]}</span>`;
+      });
+    });
+
+    html += '</div></div>';
+  });
+
+  // Show score summary
+  html += `<div style="margin-top:12px;font-size:13px;color:#666">`;
+  html += `你找出了 ${correctCount}/${totalNeeded} 个核心成分`;
+  if (state.errorCount > 0) html += ` · 错误 ${state.errorCount} 次`;
+  html += ` · 用时 ${elapsed.toFixed(1)}s`;
+  html += '</div>';
+
+  html += '</div>';
+
+  document.getElementById('analysisPanel').innerHTML = html;
+  document.getElementById('submitBtn').textContent = '下一句 →';
+  document.getElementById('submitBtn').disabled = false;
+
+  // Also highlight missed words in the sentence area
+  state.allAnswerWords.forEach(w => {
+    if (!(w.idx in state.userAnnotations)) {
+      const el = document.getElementById('wt' + w.idx);
+      if (el) {
+        // Show the missed word with its correct role
+        el.className = 'word-token wt-done r-' + w.role;
+        el.style.opacity = '0.6';
+        el.style.borderStyle = 'dashed';
+        const tag = document.createElement('span');
+        tag.className = 'role-tag';
+        tag.textContent = ROLE_SHORT[w.role];
+        el.appendChild(tag);
+      }
+    }
+  });
+}
+
+// ============================================================
+//  Finish Sentence
+// ============================================================
+function finishSentence() {
+  const elapsed = (Date.now() - state.startTime) / 1000;
+
+  // Count correct
+  let correctCount = 0;
+  state.allAnswerWords.forEach(w => {
+    if (state.userAnnotations[w.idx] === w.role) correctCount++;
+  });
+
+  const sent = SENTENCES[state.sentenceIdx];
+  state.results.push({
+    sentenceIdx: state.sentenceIdx,
+    text: sent.text,
+    tokens: [...state.tokens],
+    errors: state.errorCount,
+    time: elapsed,
+    correct: correctCount,
+    total: state.allAnswerWords.length,
+    clauses: sent.clauses.map(c => ({
+      type: c.type,
+      label: c.label,
+      words: [...c.words]
+    }))
+  });
+
+  // Show brief transition
+  const mainContent = document.getElementById('mainContent');
+  const nextIdx = state.sentenceIdx + 1;
+
+  if (nextIdx < state.currentBatch.length) {
+    mainContent.innerHTML = `
+      <div class="sentence-transition">
+        <div class="trans-num">第 ${state.sentenceIdx + 1} 句完成</div>
+        <div class="trans-msg">✅ 用时 ${elapsed.toFixed(1)}s · 错误 ${state.errorCount} 次</div>
+        <div class="trans-detail">正在加载第 ${nextIdx + 1} 句…</div>
+      </div>
+    `;
+  }
+
+  state.sentenceIdx++;
+  updateProgress();
+
+  setTimeout(() => {
+    rebuildMainContent();
+    loadSentence();
+  }, 1500);
+}
+
+// ============================================================
+//  Rebuild Main Content (after transition)
+// ============================================================
+function rebuildMainContent() {
+  const mc = document.getElementById('mainContent');
+  mc.innerHTML = `
+    <div class="legend" id="legendArea">
+      <div class="legend-item"><div class="legend-dot s-dot"></div>主语 S</div>
+      <div class="legend-item"><div class="legend-dot v-dot"></div>谓语 V</div>
+      <div class="legend-item"><div class="legend-dot o-dot"></div>宾语 O</div>
+      <div class="legend-item"><div class="legend-dot l-dot"></div>系动词 L</div>
+      <div class="legend-item"><div class="legend-dot p-dot"></div>表语 P</div>
+    </div>
+    <div class="task-hint" id="taskHint">
+      <span class="hint-icon">提示</span>
+      <span>找出句子中所有核心成分（主语、谓语、宾语、系动词、表语），选择角色后点击对应单词</span>
+    </div>
+    <div class="role-selector" id="roleSelector">
+      <span class="role-label">选择角色：</span>
+      <button class="role-btn" data-role="S" onclick="selectRole('S')">主语 S</button>
+      <button class="role-btn" data-role="V" onclick="selectRole('V')">谓语 V</button>
+      <button class="role-btn" data-role="O" onclick="selectRole('O')">宾语 O</button>
+      <button class="role-btn" data-role="L" onclick="selectRole('L')">系动词 L</button>
+      <button class="role-btn" data-role="P" onclick="selectRole('P')">表语 P</button>
+      <button class="undo-btn" id="undoBtn" onclick="undoLast()" disabled>↩ 撤销</button>
+    </div>
+    <div class="sentence-area" id="sentenceArea"></div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="submit-area" id="submitArea">
+      <button class="submit-btn" id="submitBtn" onclick="submitAnswer()">确认完成</button>
+    </div>
+    <div id="analysisPanel"></div>
+  `;
+}
+
+// ============================================================
+//  Role Selector
+// ============================================================
+function selectRole(role) {
+  state.selectedRole = role;
+  document.querySelectorAll('.role-btn').forEach(btn => {
+    const r = btn.dataset.role;
+    btn.className = 'role-btn' + (r === role ? ' active-' + role : '');
+  });
+}
+
+function resetRoleSelector() {
+  state.selectedRole = null;
+  document.querySelectorAll('.role-btn').forEach(btn => {
+    btn.className = 'role-btn';
+  });
+}
+
+// ============================================================
+//  Timer
+// ============================================================
+function startTimer() {
+  stopTimer();
+  state.timerInterval = setInterval(() => {
+    const elapsed = (Date.now() - state.startTime) / 1000;
+    document.getElementById('timerText').textContent = elapsed.toFixed(1) + 's';
+  }, 100);
+}
+
+function stopTimer() {
+  if (state.timerInterval) {
+    clearInterval(state.timerInterval);
+    state.timerInterval = null;
+  }
+}
+
+// ============================================================
+//  UI Helpers
+// ============================================================
+function updateProgress() {
+  const batchTotal = state.currentBatch.length;
+  const batchIdx = state.sentenceIdx;
+  const pct = Math.round(batchIdx / batchTotal * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressText').textContent = `第 ${state.sentenceIdx + 1} 句 / 本轮 ${batchTotal} 句（${batchIdx + 1}/${batchTotal}）`;
+}
+
+function updateErrorDisplay() {
+  document.getElementById('errorText').textContent = state.errorCount;
+}
+
+function updateRemainingDisplay() {
+  const remaining = state.allAnswerWords.filter(w => !(w.idx in state.userAnnotations)).length;
+  const el = document.getElementById('remainingText');
+  if (el) el.textContent = remaining;
+}
+
+function showFeedback(msg, type) {
+  const box = document.getElementById('feedbackBox');
+  if (!box) return;
+  box.className = 'feedback-box show ' + type;
+  box.textContent = msg;
+}
+
+function hideFeedback() {
+  const box = document.getElementById('feedbackBox');
+  if (box) box.className = 'feedback-box';
+}
+
+// ============================================================
+//  Summary
+// ============================================================
+function showSummary() {
+  stopTimer();
+  document.getElementById('appScreen').style.display = 'none';
+  const screen = document.getElementById('summaryScreen');
+  screen.style.display = '';
+  screen.classList.add('show');
+
+  const content = document.getElementById('summaryContent');
+  const totalTime = state.results.reduce((s, r) => s + r.time, 0);
+  const totalErr = state.results.reduce((s, r) => s + r.errors, 0);
+  const totalCorrect = state.results.reduce((s, r) => s + r.correct, 0);
+  const totalWords = state.results.reduce((s, r) => s + r.total, 0);
+  const avgTime = state.results.length > 0 ? totalTime / state.results.length : 0;
+  const accuracy = totalWords > 0 ? Math.round(totalCorrect / totalWords * 100) : 0;
+
+  let rating = '继续加油';
+  if (totalErr === 0 && accuracy === 100) rating = '🏆 完美';
+  else if (accuracy >= 90) rating = '⭐ 优秀';
+  else if (accuracy >= 70) rating = '👍 良好';
+
+  let html = `
+    <div class="summary-header">
+      <h2>练习完成</h2>
+      <div class="summary-score">${rating}</div>
+      <div class="summary-detail">
+        共 ${state.results.length} 句 · 总用时 ${totalTime.toFixed(1)}s · 平均 ${avgTime.toFixed(1)}s/句<br>
+        正确率 ${accuracy}%（${totalCorrect}/${totalWords}） · 总错误 ${totalErr} 次
+      </div>
+    </div>
+  `;
+
+  state.results.forEach((result, i) => {
+    const resultAcc = result.total > 0 ? Math.round(result.correct / result.total * 100) : 0;
+    html += `<div class="result-card">
+      <h3>第 ${i + 1} 句</h3>
+      <div class="result-sentence">${result.text}</div>
+      <div class="result-clauses">`;
+
+    result.clauses.forEach(clause => {
+      html += `<div class="result-clause-row">
+        <span class="result-clause-label ${clause.type === 'main' ? 'main-label' : 'sub-label'}">${clause.label}</span>`;
+      const roleOrder = ['S', 'V', 'O', 'L', 'P'];
+      roleOrder.forEach(role => {
+        clause.words.filter(w => w.role === role).forEach(w => {
+          html += `<span class="analysis-word-tag r-${w.role}">${ROLE_SHORT[w.role]}: ${result.tokens[w.idx]}</span>`;
+        });
+      });
+      html += `</div>`;
+    });
+
+    html += `</div>
+      <div class="result-time">⏱ 用时 ${result.time.toFixed(1)}s</div>
+      ${result.errors > 0 ? `<div class="result-errors">✗ 错误 ${result.errors} 次</div>` : '<div style="font-size:12px;color:#2E7D32;margin-top:4px">✅ 零错误！</div>'}
+    </div>`;
+  });
+
+  html += `<div style="text-align:center;margin-top:24px">`;
+  html += `<button class="start-btn" onclick="restartPractice()">再练一组（随机5句）</button>`;
+  html += `</div>`;
+
+  content.innerHTML = html;
+}
+
+function restartPractice() {
+  document.getElementById('summaryScreen').style.display = 'none';
+  document.getElementById('summaryScreen').classList.remove('show');
+  document.getElementById('startScreen').style.display = '';
+}
+</script>
+</body>
+</html>
